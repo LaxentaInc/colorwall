@@ -1,0 +1,580 @@
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Upload, ArrowRight } from 'lucide-react';
+import { open as openDialog } from '@tauri-apps/plugin-dialog';
+import { invoke } from '@tauri-apps/api/core';
+import StoreCard from '../components/StoreCard';
+import girlImage from '../assets/girlieeeee.jpg';
+import showcase from '../assets/awewww.jpg';
+// import logoImage from '../assets/LxColorWall.png';
+import ConfirmModal from '../components/confirmMod';
+import { useVisibility } from '../context/WinCloseContext';
+import Greeting from '../components/Greeting';
+
+interface HomePageProps {
+    onNavigateToSource: (source: string) => void;
+    onNavigateToLive: () => void;
+}
+
+const SESSION_STATIC_KEY = 'colorwall_home_static_wp';
+const SESSION_LIVE_KEY = 'colorwall_home_live_wp';
+const SESSION_FETCHED_FLAG = 'colorwall_home_fetched';
+const PROFILE_HINT_DISMISSED = 'colorwall_profile_hint_dismissed';
+
+const getInitialImage = (key: string, defaultImg: string) => {
+    const cached = sessionStorage.getItem(key);
+    return cached || defaultImg;
+};
+
+const getGreeting = (hour: number, username: string) => {
+    const minute = new Date().getMinutes();
+
+    // ultra rare easter eggs (very specific times)
+    if (hour === 3 && minute === 33) {
+        return `3:33 AM demon hour, ${username}! 👹`;
+    }
+    if (hour === 4 && minute === 20) {
+        return `4:20 nice, ${username} 🌿`;
+    }
+
+    // rare easter eggs (~5% chance total)
+    const rareChance = Math.random();
+    if (rareChance < 0.01) {
+        return `Nyaa~ ${username}! 🐱`;
+    }
+    if (rareChance >= 0.01 && rareChance < 0.02) {
+        return `Heil Eggler, ${username}! 🥚`;
+    }
+    if (rareChance >= 0.02 && rareChance < 0.03) {
+        return `${username} has unlocked: Rare Greeting #${Math.floor(Math.random() * 999) + 1}!`;
+    }
+    if (rareChance >= 0.03 && rareChance < 0.04) {
+        return `The developer is watching you, ${username}... 👀`;
+    }
+    if (rareChance >= 0.04 && rareChance < 0.05) {
+        return `Your desktop called, it wants personality, ${username}`;
+    }
+
+    const greetings = {
+        night: [
+            `Good night, ${username}!`,
+            `${username} is up late!`,
+            `Still awake, ${username}?`,
+            `Burning the midnight oil, ${username}?`,
+            `Tomorrow is not going to be your day. Same goes for this year!`,
+            `${username} vs sleep: sleep is winning`,
+            `Late Night gooner ${username} appears!`,
+            `Can't sleep, ${username}?`,
+            `Late night vibes, ${username}!`,
+            `Discord mod hours, ${username}?`,
+            `Who hurt you ${username}?`,
+            `${username} in the dark hours!`,
+            `Restless night, ${username}?`,
+            `It's okay to open Wallpaper Engines at night instead of sleeping :D`,
+            `Anime tiddies keeyping ya up? ${username}?`,
+            `Stars are out, ${username}!`,
+            `What's keeping you up, ${username}?`,
+            `Late night scroll, ${username}?`,
+            `It's past 9pm ${username}, sleep?`,
+            `Insomnia hitting, ${username}?`,
+            `It's okay, i won't judge you for being awake ${username}`,
+            `Should probably sleep, ${username}...`,
+            `One more hour, ${username}?`,
+            `I don't know if your girlfriend is sleeping with someone; but i am positive she is NOT sleeping with you rn, DO what ya can with this info`,
+            `The night is young, ${username}!`,
+            `What to do if the world ends? ${username}, Set a live wallpaper!`,
+            `3am thoughts, ${username}?`,
+            `Sleep is overrated anyway, ${username}!`,
+            `Are you alright?`,
+            `Just one more thing, ${username}?`,
+            `SLEEP NOW, ${username}!`,
+            `Unemployed Activities, ${username}?`,
+            `Are you sure you want to do this?`,
+            `Please stop being sad ${username}?`,
+            `The demons are active, ${username}!`,
+            `Touch grass tomorrow, ${username}`,
+            `Your sleep schedule is cooked, ${username}`,
+            `Vampire ${username} awakens!`,
+            `Your eye bags called, ${username}`,
+            `Tomorrow you is gonna hate you, ${username}`,
+        ],
+        morning: [
+            `Good morning, ${username}!`,
+            `${username} rises early!`,
+            `Morning bbg, ${username}!`,
+            `Rise and shine, ${username}!`,
+            `Coffee time, ${username}?`,
+            `Fresh start, ${username}!`,
+            `${username} greets the day!`,
+            `Early bird ${username}!`,
+            `New day, ${username}!`,
+            `Sunrise energy, ${username}!`,
+            `Ready for the day, ${username}?`,
+            `Morning glory, ${username}!`,
+            `Wakey wakey, ${username}!`,
+            `Need that coffee, ${username}?`,
+            `Let's get this bread, ${username}!`,
+            `Motivated this morning, ${username}?`,
+            `Feeling fresh, ${username}?`,
+            `Another day, another slay, ${username}!`,
+            `You got this today, ${username}!`,
+            `Breakfast or vibes lol, ${username}?`,
+            `Time to conquer, ${username}!`,
+            `Morning sunshine, ${username}!`,
+            `What's the plan today, ${username}?`,
+            `Bright and early, ${username}!`,
+            `Today's gonna be good, ${username}!`,
+            `Please Brush your teeth ${username}? uwu?`,
+            `${username} escaped the bed dimension!`,
+            `Five more minutes x20, ${username}?`,
+            `The grind never stops, ${username}!`,
+            `Snooze button abuser ${username} appears!`,
+        ],
+        afternoon: [
+            `Good afternoon, ${username}!`,
+            `${username} is here!`,
+            `Hey ${username}!`,
+            `${username} returns!`,
+            `Coffee and work time, ${username}?`,
+            `Enjoying the day, ${username}?`,
+            `How's your day going, ${username}?`,
+            `Midday check-in, ${username}!`,
+            `${username} in action!`,
+            `Productive vibes, ${username}?`,
+            `Afternoon energy, ${username}!`,
+            `Halfway there, ${username}!`,
+            `Keeping busy, ${username}?`,
+            `What's cooking, ${username}?`,
+            `Lunch break over, ${username}?`,
+            `Back to the grind, ${username}?`,
+            `Doing okay, ${username}?`,
+            `Need a break, ${username}?`,
+            `Staying focused, ${username}?`,
+            `How's the hustle, ${username}?`,
+            `Powering through, ${username}?`,
+            `Almost there, ${username}!`,
+            `Afternoon pick-me-up time, ${username}?`,
+            `What's new, ${username}?`,
+            `Crushing it, ${username}?`,
+            `Vibing today, ${username}?`,
+            `Making moves, ${username}?`,
+            `Day treating you well, ${username}?`,
+            `${username} returns from touching grass!`,
+            `Post-lunch coma incoming, ${username}?`,
+            `Still procrastinating, ${username}?`,
+            `The day is escaping, ${username}!`,
+        ],
+        evening: [
+            `Good evening, ${username}!`,
+            `${username} returns!`,
+            `Welcome back, ${username}!`,
+            `I know you procastrinated, ${username}!`,
+            `I will do it tomorrow -${username}`,
+            `I have time -${username} (no you don't)`,
+            `Evening huh?, ${username}!`,
+            `How was your day, ${username}?`,
+            `Winding down, ${username}?`,
+            `${username} arrives home!`,
+            `You alright, ${username}?`,
+            `Time to relax, ${username}?`,
+            `${username} at dusk!`,
+            `End of day, ${username}!`,
+            `Cozy hours, ${username}!`,
+            `Settling in, ${username}?`,
+            `Ready to unwind, ${username}?`,
+            `Finally some rest, ${username}?`,
+            `Long day, ${username}?`,
+            `Time for you, ${username}!`,
+            `Survived another one, ${username}?`,
+            `Feet up time, ${username}!`,
+            `What's for dinner, ${username}?`,
+            `Netflix and chill, ${username}?`,
+            `You deserve a break, ${username}!`,
+            `Made it through, ${username}!`,
+            `Peace at last, ${username}?`,
+            `How you feeling, ${username}?`,
+            `Time to decompress, ${username}!`,
+            `Golden hour huh, ${username}!`,
+            `Day went by fast huh, ${username}?`,
+            `${username} survived another one!`,
+            `Time to rot on the couch, ${username}?`,
+            `Productivity? Never heard of her, ${username}`,
+            `Tomorrow's problem is tomorrow's problem, ${username}`,
+        ],
+    };
+
+    let timeOfDay: keyof typeof greetings;
+    if (hour >= 21 || hour < 6) timeOfDay = 'night'; // 9pm to 6am
+    else if (hour >= 6 && hour < 12) timeOfDay = 'morning';
+    else if (hour >= 12 && hour < 18) timeOfDay = 'afternoon';
+    else timeOfDay = 'evening'; // 6pm to 9pm
+
+    const messages = greetings[timeOfDay];
+    return messages[Math.floor(Math.random() * messages.length)];
+};
+
+export default function HomePage({ onNavigateToSource, onNavigateToLive }: HomePageProps) {
+    const { isVisible } = useVisibility();
+    const [uploading, setUploading] = React.useState(false);
+    const [staticImage, setStaticImage] = React.useState<string>(() => getInitialImage(SESSION_STATIC_KEY, girlImage));
+    const [liveImage, setLiveImage] = React.useState<string>(() => getInitialImage(SESSION_LIVE_KEY, showcase));
+    const [greeting, setGreeting] = React.useState<string>('Welcome to ColorWall');
+    const [showProfileHint, setShowProfileHint] = React.useState(() => {
+        return localStorage.getItem(PROFILE_HINT_DISMISSED) !== 'true';
+    });
+    const [modal, setModal] = React.useState<{ isOpen: boolean; title: string; message: string; isDanger: boolean }>({
+        isOpen: false,
+        title: '',
+        message: '',
+        isDanger: false,
+    });
+
+    React.useEffect(() => {
+        const initGreeting = async () => {
+            try {
+                const username: string = await invoke('get_username');
+                const hour = new Date().getHours();
+
+                if (username) {
+                    setGreeting(getGreeting(hour, username));
+                }
+            } catch (error) {
+                console.log('Could not get username, using default greeting');
+                const hour = new Date().getHours();
+                if (hour >= 0 && hour < 6) setGreeting('Good night!');
+                else if (hour >= 6 && hour < 12) setGreeting('Good morning!');
+                else if (hour >= 12 && hour < 18) setGreeting('Good afternoon!');
+                else setGreeting('Good evening!');
+            }
+        };
+
+        initGreeting();
+    }, []);
+
+    React.useEffect(() => {
+        const fetchDynamicWallpapers = async () => {
+            const alreadyFetched = sessionStorage.getItem(SESSION_FETCHED_FLAG);
+            if (alreadyFetched === 'true') {
+                console.log('[HomePage] Skipping wallpaper fetch - already fetched this session');
+                return;
+            }
+
+            const cachedStatic = sessionStorage.getItem(SESSION_STATIC_KEY);
+            const cachedLive = sessionStorage.getItem(SESSION_LIVE_KEY);
+            if (cachedStatic && cachedLive) {
+                sessionStorage.setItem(SESSION_FETCHED_FLAG, 'true');
+                return;
+            }
+
+            console.log('[HomePage] Fetching dynamic wallpapers...');
+
+            try {
+                if (!cachedStatic) {
+                    const staticResult: any = await invoke('search_wallpapers', {
+                        query: '',
+                        sources: ['konachan'],
+                        limitPerSource: 5,
+                        randomize: true,
+                        page: 1,
+                        purity: '100',
+                        aiArt: false,
+                    });
+
+                    if (staticResult.success && staticResult.items?.length > 0) {
+                        const randomIndex = Math.floor(Math.random() * staticResult.items.length);
+                        const item = staticResult.items[randomIndex];
+                        const url = item.thumbnailUrl || item.thumbnail_url || item.imageUrl || item.image_url;
+                        if (url) {
+                            setStaticImage(url);
+                            sessionStorage.setItem(SESSION_STATIC_KEY, url);
+                        }
+                    }
+                }
+                // this wont work but idc atp, i don't need it to work either lmao (forget it my guy, not fixing it)
+                if (!cachedLive) {
+                    const liveResult: any = await invoke('search_wallpapers', {
+                        query: '',
+                        sources: ['motionbgs'],
+                        limitPerSource: 5,
+                        randomize: true,
+                        page: 1,
+                        purity: '100',
+                        aiArt: false,
+                    });
+
+                    if (liveResult.success && liveResult.items?.length > 0) {
+                        const randomIndex = Math.floor(Math.random() * liveResult.items.length);
+                        const item = liveResult.items[randomIndex];
+                        const url = item.thumbnailUrl || item.thumbnail_url || item.imageUrl || item.image_url;
+                        if (url) {
+                            setLiveImage(url);
+                            sessionStorage.setItem(SESSION_LIVE_KEY, url);
+                        }
+                    }
+                }
+
+                sessionStorage.setItem(SESSION_FETCHED_FLAG, 'true');
+            } catch (error) {
+                console.log('Failed to fetch dynamic wallpapers, using defaults:', error);
+            }
+        };
+
+        fetchDynamicWallpapers();
+    }, []);
+
+    const handleUpload = async () => {
+        try {
+            setUploading(true);
+            const selected = await openDialog({
+                multiple: false,
+                filters: [
+                    {
+                        name: 'Media',
+                        extensions: ['mp4', 'mkv', 'jpg', 'jpeg', 'png', 'gif', 'webm', 'avi', 'mov', 'wmv'],
+                    },
+                ],
+            });
+
+            if (selected && typeof selected === 'string') {
+                const result: any = await invoke('register_local_wallpaper', {
+                    filePath: selected,
+                });
+
+                if (result.success) {
+                    const filename = selected.split(/[\/\\]/).pop() || 'File';
+                    setModal({
+                        isOpen: true,
+                        title: 'YAY! Wallpaper Added!',
+                        message: `"${filename}" has been successfully added to your library. You can now touch it in your collection.`,
+                        isDanger: false,
+                    });
+                } else {
+                    setModal({
+                        isOpen: true,
+                        title: 'Upload Failed',
+                        message: 'Failed to add wallpaper: ' + result.error,
+                        isDanger: true,
+                    });
+                }
+            }
+        } catch (error) {
+            console.error('Upload failed:', error);
+            setModal({
+                isOpen: true,
+                title: 'Error',
+                message: 'Upload failed: ' + error,
+                isDanger: true,
+            });
+        } finally {
+            setUploading(false);
+        }
+    };
+
+    return (
+        <div style={{ padding: '40px 48px' }}>
+            <ConfirmModal
+                isOpen={modal.isOpen}
+                title={modal.title}
+                message={modal.message}
+                isDanger={modal.isDanger}
+                hideButtons={true}
+                noBlur={true}
+                onConfirm={() => setModal({ ...modal, isOpen: false })}
+                onCancel={() => setModal({ ...modal, isOpen: false })}
+            />
+
+            {/* Hero Section */}
+            <motion.div
+                initial={{ y: -20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.5, ease: 'easeOut' }}
+                style={{ marginBottom: '40px', display: 'flex', alignItems: 'center', gap: '32px' }}
+            >
+                {/* maybe later lol */}
+                {/* Logo
+                <img
+                    src={logoImage}
+                    alt="ColorWall Logo"
+                    style={{
+                        width: '180px',
+                        height: 'auto',
+                        filter: 'drop-shadow(0 8px 24px rgba(0, 120, 212, 0.3))',
+                    }}
+                /> */}
+
+                <div style={{ flex: 1 }}>
+                    <div style={{ marginBottom: '8px' }}>
+                        <Greeting isVisible={isVisible} text={greeting} />
+                    </div>
+                    {showProfileHint && (
+                        <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '12px',
+                            marginBottom: '8px',
+                        }}>
+                            <span style={{
+                                color: 'var(--text-tertiary)',
+                                fontSize: '13px',
+                                opacity: 0.7,
+                            }}>
+                                Don't like the username? You can change it anytime from the profile icon in the titlebar!
+                            </span>
+                            <button
+                                onClick={() => {
+                                    setShowProfileHint(false);
+                                    localStorage.setItem(PROFILE_HINT_DISMISSED, 'true');
+                                }}
+                                style={{
+                                    background: 'transparent',
+                                    border: 'none',
+                                    color: 'var(--text-tertiary)',
+                                    fontSize: '12px',
+                                    cursor: 'pointer',
+                                    opacity: 0.5,
+                                    padding: '2px 6px',
+                                    textDecoration: 'underline',
+                                }}
+                            >
+                                dismiss
+                            </button>
+                        </div>
+                    )}
+                    <p style={{
+                        color: 'var(--text-secondary)',
+                        fontSize: '16px',
+                        lineHeight: 1.5,
+                        maxWidth: '500px',
+                    }}>
+                        Open source wallpaper engine built for performance and You!
+                    </p>
+                </div>
+            </motion.div>
+
+            {/* Upload Section - Colorful Gradient */}
+            <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.15, duration: 0.5 }}
+                style={{
+                    background: 'linear-gradient(135deg, rgba(0, 120, 212, 0.15), rgba(99, 102, 241, 0.15))',
+                    borderRadius: '20px',
+                    padding: '32px',
+                    marginBottom: '40px',
+                    border: '1px solid rgba(0, 120, 212, 0.25)',
+                }}
+            >
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <div style={{ flex: 1 }}>
+                        <h2 style={{ fontSize: '20px', fontWeight: 600, marginBottom: '6px' }}>
+                            Upload Your Own
+                        </h2>
+                        <p style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>
+                            Add images and videos from your collection
+                        </p>
+                    </div>
+                    <motion.button
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.97 }}
+                        onClick={handleUpload}
+                        disabled={uploading}
+                        style={{
+                            padding: '14px 28px',
+                            background: uploading
+                                ? 'rgba(255, 255, 255, 0.1)'
+                                : 'linear-gradient(135deg, var(--accent), #1a86d8)',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '12px',
+                            cursor: uploading ? 'not-allowed' : 'pointer',
+                            fontWeight: 600,
+                            fontSize: '14px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            boxShadow: uploading ? 'none' : '0 4px 20px rgba(0, 120, 212, 0.3)',
+                        }}
+                    >
+                        {uploading ? (
+                            <>
+                                <div
+                                    style={{
+                                        width: '16px',
+                                        height: '16px',
+                                        border: '2px solid rgba(255,255,255,0.3)',
+                                        borderTop: '2px solid white',
+                                        borderRadius: '50%',
+                                        animation: 'spin 0.8s linear infinite',
+                                    }}
+                                />
+                                Uploading...
+                            </>
+                        ) : (
+                            <>
+                                <Upload size={16} />
+                                Choose File
+                            </>
+                        )}
+                    </motion.button>
+                </div>
+            </motion.div>
+
+            {/* Browse Section */}
+            <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.25, duration: 0.5 }}
+            >
+                <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    marginBottom: '24px'
+                }}>
+                    <h2 style={{ fontSize: '22px', fontWeight: 600 }}>Browse Store</h2>
+                    <motion.button
+                        whileHover={{ x: 4 }}
+                        style={{
+                            background: 'transparent',
+                            border: 'none',
+                            color: 'var(--accent)',
+                            fontSize: '14px',
+                            fontWeight: 500,
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '4px',
+                        }}
+                        onClick={() => onNavigateToSource('all')}
+                    >
+                        View all <ArrowRight size={14} />
+                    </motion.button>
+                </div>
+
+                <div
+                    style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
+                        gap: '20px',
+                    }}
+                >
+                    <StoreCard
+                        title="Static Wallpapers"
+                        description="High-quality images from WallHaven, MoeWalls, and more"
+                        imagePath={staticImage}
+                        type="static"
+                        onClick={() => onNavigateToSource('all')}
+                    />
+                    <StoreCard
+                        title="Live Wallpapers"
+                        description="Animated wallpapers that bring your desktop to life"
+                        imagePath={liveImage}
+                        type="live"
+                        onClick={onNavigateToLive}
+                    />
+                </div>
+            </motion.div>
+        </div>
+    );
+}
+
