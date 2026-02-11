@@ -22,7 +22,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://www.laxenta.tech'),
+  metadataBase: new URL('https://www.laxenta.info'),
   title: {
     default: "ColorWall",
     template: "%s | ColorWall"
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://www.laxenta.tech',
+    url: 'https://www.laxenta.info',
     siteName: 'ColorWall',
     title: 'ColorWall',
     description: 'Next-gen wallpaper engine for Windows',
@@ -79,7 +79,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: 'https://www.laxenta.tech',
+    canonical: 'https://www.laxenta.info',
   },
 };
 
