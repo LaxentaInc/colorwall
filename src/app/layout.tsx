@@ -33,7 +33,6 @@ export const metadata: Metadata = {
     "live wallpapers",
     "4k wallpapers",
     "windows customization",
-    "glassmorphism",
     "anime wallpapers",
     "desktop customization"
   ],
