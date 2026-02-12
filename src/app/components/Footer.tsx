@@ -14,47 +14,29 @@ export const Footer = ({ theme }: { theme: "dark" | "light" }) => {
     const baTextLight = isDark ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.4)";
 
     return (
-        <footer className={`relative mt-20 overflow-hidden ${isDark ? "bg-[#0a0a0a]" : "bg-slate-50"}`}>
-            {/* ════ Decoration Strip ════ */}
-            {/* The diagonal striped header characteristic of BA UI */}
-            <div className="h-3 w-full relative overflow-hidden">
+        <footer className="relative mt-20 overflow-hidden">
+            {/* ════ Blurred Background Banner ════ */}
+            <div className="absolute inset-0 z-0 select-none pointer-events-none">
+                <div className={`absolute inset-0 ${isDark ? "bg-[#0a0a0a]/90" : "bg-slate-50/90"} z-10`} />
                 <div
-                    className="absolute inset-0 w-full h-full"
+                    className="absolute inset-0 w-full h-full opacity-30 transform scale-105 blur-xl"
                     style={{
-                        backgroundColor: baBlue,
-                        backgroundImage: `repeating-linear-gradient(
-                            -45deg,
-                            transparent,
-                            transparent 10px,
-                            rgba(255,255,255,0.2) 10px,
-                            rgba(255,255,255,0.2) 20px
-                        )`
+                        backgroundImage: "url('/LxColorWall.png')",
+                        backgroundSize: "cover",
+                        backgroundPosition: "center"
                     }}
                 />
+                <div className={`absolute inset-0 bg-gradient-to-t ${isDark ? "from-[#0a0a0a]" : "from-slate-50"} to-transparent z-20`} />
             </div>
 
-            <div className="max-w-7xl mx-auto px-6 py-12 sm:py-16">
+            <div className="relative z-30 max-w-7xl mx-auto px-6 py-12 sm:py-16">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8">
-                    {/* ════ Branding / "Schale" ════ */}
-                    <div className="col-span-1 md:col-span-1 space-y-4">
-                        <div className="flex items-center gap-2">
-                            {/* Halo Icon / Logo Placeholder */}
-                            <div className="relative w-8 h-8 rounded-full border-2 border-[#00A4FF] flex items-center justify-center">
-                                <motion.div
-                                    className="w-4 h-4 bg-[#00A4FF] rounded-full"
-                                    animate={{ scale: [1, 1.2, 1] }} // smooth breathing 
-                                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                                />
-                                {/* Halo ring effect */}
-                                <motion.div
-                                    className="absolute inset-[-4px] rounded-full border border-[#00A4FF]/30"
-                                    animate={{ rotate: 360 }}
-                                    transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-                                />
+                    {/* ════ Branding ════ */}
+                    <div className="col-span-1 md:col-span-1 space-y-6">
+                        <div className="relative h-10 w-full">
+                            <div className="absolute -top-12 -left-4 w-[36rem] h-36 pointer-events-none select-none">
+                                <img src="/LxColorWall.png" alt="ColorWall Logo" className="object-contain w-full h-full object-left" />
                             </div>
-                            <span className={`font-black text-xl tracking-tighter ${isDark ? "text-white" : "text-slate-800"}`}>
-                                COLOR<span className="text-[#00A4FF]">WALL</span>
-                            </span>
                         </div>
                         <p className={`text-sm leading-relaxed font-mono ${isDark ? "text-white/40" : "text-slate-500"}`}>
                             PRODUCED BY LAXENTA INC <br />
@@ -64,26 +46,44 @@ export const Footer = ({ theme }: { theme: "dark" | "light" }) => {
 
                     {/* ════ Links ════ */}
                     {[
-                        { title: "Product", links: ["Features", "Download", "Changelog", "Source Code"] },
-                        { title: "Community", links: ["Discord", "Twitter", "GitHub", "Issues"] },
-                        { title: "Legal", links: ["Privacy", "Terms", "Licenses", "Credits"] }
+                        {
+                            title: "Product", links: [
+                                // { name: "Features", href: "/#features" },
+                                { name: "Download", href: "/download" },
+                                { name: "Changelog", href: "/changelog" }
+                            ]
+                        },
+                        {
+                            title: "Community", links: [
+                                { name: "Discord", href: "https://discord.gg/QYwhay7r2V" },
+                                { name: "GitHub", href: "https://github.com/shelleyloosespatience/WallpaperEngine" },
+                                { name: "Issues", href: "https://github.com/shelleyloosespatience/WallpaperEngine/issues" }
+                            ]
+                        },
+                        {
+                            title: "Legal", links: [
+                                { name: "Privacy", href: "/privacy" },
+                                { name: "Terms", href: "/terms" }
+                            ]
+                        }
                     ].map((section) => (
                         <div key={section.title} className="col-span-1">
-                            <h3 className={`font-bold text-sm uppercase tracking-wider mb-6 flex items-center gap-2
-                                ${isDark ? "text-white/90" : "text-slate-800"}`}>
-                                <span className="w-1.5 h-1.5 bg-[#00A4FF] rounded-sm transform rotate-45" />
+                            <h3 className={`font-bold text-xs uppercase tracking-widest mb-6 flex items-center gap-2 opacity-50
+                                ${isDark ? "text-white" : "text-slate-800"}`}>
                                 {section.title}
                             </h3>
                             <ul className="space-y-3">
                                 {section.links.map((link) => (
-                                    <li key={link}>
+                                    <li key={link.name}>
                                         <a
-                                            href="#"
+                                            href={link.href}
+                                            target={link.href.startsWith("http") ? "_blank" : "_self"}
+                                            rel={link.href.startsWith("http") ? "noopener noreferrer" : ""}
                                             className={`text-sm font-medium transition-all duration-200 flex items-center gap-2 group
-                                                ${isDark ? "text-white/40 hover:text-[#00A4FF]" : "text-slate-500 hover:text-[#00A4FF]"}`}
+                                                ${isDark ? "text-white/60 hover:text-[#00A4FF]" : "text-slate-500 hover:text-[#00A4FF]"}`}
                                         >
-                                            <span className="w-0 group-hover:w-2 h-[1px] bg-[#00A4FF] transition-all duration-300" />
-                                            {link}
+                                            <span className="w-0 group-hover:w-1.5 h-[1px] bg-[#00A4FF] transition-all duration-300" />
+                                            {link.name}
                                         </a>
                                     </li>
                                 ))}
@@ -96,32 +96,33 @@ export const Footer = ({ theme }: { theme: "dark" | "light" }) => {
                 <div className={`mt-16 pt-8 border-t flex flex-col sm:flex-row justify-between items-center gap-4
                     ${isDark ? "border-white/5" : "border-slate-200"}`}>
 
-                    <div className={`text-xs font-mono opacity-50 flex items-center gap-2 ${isDark ? "text-white" : "text-slate-600"}`}>
-                        <span>© 2025 LAXENTA INC.</span>
+                    <div className={`text-xs font-mono opacity-40 flex items-center gap-2 ${isDark ? "text-white" : "text-slate-600"}`}>
+                        <span>© 2026 LAXENTA INC.</span>
                         <span className="w-1 h-1 bg-[#00A4FF] rounded-full" />
                         <span className="uppercase">All rights reserved.</span>
                     </div>
 
                     <div className="flex gap-4">
-                        {[Github, Twitter, MessageCircle].map((Icon, i) => (
+                        {[
+                            { icon: Github, href: "https://github.com/shelleyloosespatience" },
+                            { icon: MessageCircle, href: "https://discord.gg/QYwhay7r2V" }
+                        ].map((item, i) => (
                             <a
                                 key={i}
-                                href="#"
+                                href={item.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 className={`p-2 rounded-lg transition-colors duration-200
                                     ${isDark
                                         ? "bg-white/5 text-white/60 hover:bg-[#00A4FF] hover:text-white"
                                         : "bg-slate-100 text-slate-500 hover:bg-[#00A4FF] hover:text-white"}`}
                             >
-                                <Icon size={16} />
+                                <item.icon size={16} />
                             </a>
                         ))}
                     </div>
                 </div>
             </div>
-
-            {/* ════ Background Elements ════ */}
-            <div className="absolute bottom-0 right-0 w-64 h-64 bg-gradient-to-tl from-[#00A4FF]/5 to-transparent pointer-events-none" />
-            <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-[#00A4FF]/5 to-transparent pointer-events-none" />
         </footer>
     );
 };

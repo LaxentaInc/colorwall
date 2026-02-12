@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 import { ThemeProvider } from "@/app/contexts/ThemeContext";
+import { Navbar } from "@/app/components/Navbar";
 import { Analytics } from '@vercel/analytics/next';
 
 const geistSans = Geist({
@@ -27,7 +28,7 @@ export const metadata: Metadata = {
     default: "ColorWall",
     template: "%s | ColorWall"
   },
-  description: "Next-gen wallpaper engine for Windows with glassmorphism UI.",
+  description: "An free & Fast Wallpaper engine made in Rust for win 11/10 and high performance.",
   keywords: [
     "wallpaper engine",
     "live wallpapers",
@@ -37,7 +38,7 @@ export const metadata: Metadata = {
     "desktop customization"
   ],
   authors: [{ name: "Laxenta", url: "https://github.com/shelleyloosespatience" }],
-  creator: "@me_straight",
+  creator: "@laxenta.me",
   publisher: "Laxenta Inc",
   formatDetection: {
     email: false,
@@ -55,7 +56,7 @@ export const metadata: Metadata = {
     url: 'https://www.laxenta.info',
     siteName: 'ColorWall',
     title: 'ColorWall',
-    description: 'Next-gen wallpaper engine for Windows',
+    description: 'An free & Fast Wallpaper engine made in Rust for win 11/10 and high performance.',
     images: [
       {
         url: '/LxColorWall.png',
@@ -105,6 +106,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)]`}
       >
         <ThemeProvider>
+          <Navbar />
           <div className="relative min-h-screen flex flex-col">
             {/* Background elements for glass effect depth */}
             <div className="fixed inset-0 bg-[url('/grid.svg')] opacity-[0.03] pointer-events-none z-0" />

@@ -22,12 +22,12 @@ export const BottomCTA = ({ theme }: { theme: "dark" | "light" }) => {
                     className="text-3xl sm:text-4xl font-black"
                 />
                 <p className={`max-w-lg mx-auto ${theme === "dark" ? "text-white/50" : "text-black/50"}`}>
-                    free, open source, no signup. just download and start browsing thousands of wallpapers.
+                    free, soon to be open source, no signup. just download and start Configuring your desktop! Please make sure to report bugs! :D my discord/instagram @laxenta.me
                 </p>
 
                 <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
                     <a
-                        href="https://github.com/shelleyloosespatience/WallpaperEngine/releases"
+                        href="/download"
                         target="_blank"
                         rel="noopener noreferrer"
                         className={`inline-flex items-center gap-2.5 px-8 py-4 rounded-xl font-bold text-sm tracking-wide transition-all duration-300 hover:-translate-y-0.5
@@ -39,7 +39,7 @@ export const BottomCTA = ({ theme }: { theme: "dark" | "light" }) => {
                         Download for Windows
                     </a>
 
-                    <a
+                    {/* <a
                         href="https://github.com/shelleyloosespatience/WallpaperEngine"
                         target="_blank"
                         rel="noopener noreferrer"
@@ -50,7 +50,7 @@ export const BottomCTA = ({ theme }: { theme: "dark" | "light" }) => {
                     >
                         <Github size={16} />
                         Source Code
-                    </a>
+                    </a> */}
                 </div>
             </motion.div>
         </section>
