@@ -109,7 +109,7 @@ export default function RootLayout({
           <Navbar />
           <div className="relative min-h-screen flex flex-col">
             {/* Background elements for glass effect depth */}
-            <div className="fixed inset-0 bg-[url('/grid.svg')] opacity-[0.03] pointer-events-none z-0" />
+            {/* <div className="fixed inset-0 bg-[url('/grid.svg')] opacity-[0.03] pointer-events-none z-0" /> */}
 
             <main className="relative z-10 flex-1 flex flex-col transition-all duration-300">
               {children}

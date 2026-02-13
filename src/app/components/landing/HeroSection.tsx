@@ -23,14 +23,14 @@ export const HeroSection = ({ theme }: { theme: "dark" | "light" }) => {
                     muted
                     loop
                     playsInline
-                    className={`w-full h-full object-cover ${theme === "dark" ? "opacity-25" : "opacity-10"}`}
+                    className={`w-full h-full object-cover ${theme === "dark" ? "opacity-65" : "opacity-90"}`}
                 >
                     <source src="/videos/myCutekoiiii.webm" type="video/webm" />
                 </video>
                 {/* subtle gradient fade at edges */}
                 <div className={`absolute inset-0 ${theme === "dark"
                     ? "bg-gradient-to-b from-black/60 via-transparent to-black"
-                    : "bg-gradient-to-b from-white/70 via-transparent to-white"}`}
+                    : "bg-gradient-to-b from-white/30 via-transparent to-white/80"}`}
                 />
             </div>
 

@@ -45,7 +45,7 @@ export const ShowcaseCard = ({
     return (
         <section
             ref={ref}
-            className="min-h-screen flex items-center py-20 sm:py-32"
+            className="flex items-center py-10 sm:py-16"
         >
             <div className="w-full max-w-[1400px] mx-auto px-6 sm:px-12">
                 <div className={`
