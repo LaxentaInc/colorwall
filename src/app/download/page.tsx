@@ -48,7 +48,7 @@ export default function DownloadPage() {
                             </h1>
                             <p className={`text-lg ${mutedText} max-w-xl mx-auto`}>
                                 An Lightweight Wallpaper Engine in Rust<br />
-                                <span className="text-xs font-mono opacity-70">v3.5.7 · 64-bit · Windows 10/11</span>
+                                <span className="text-xs font-mono opacity-70">v3.6.0 · 64-bit · Windows 10/11</span>
                             </p>
                         </div>
 
@@ -63,7 +63,7 @@ export default function DownloadPage() {
                                 <Download className="mt-1" size={24} />
                                 <div className="text-left">
                                     <div className="leading-none mb-1">Download Installer</div>
-                                    <div className="text-xs font-normal opacity-60">ColorWall_3.5.7_x64-setup.exe (7.1 MB)</div>
+                                    <div className="text-xs font-normal opacity-60">ColorWall_3.6.0_x64-setup.exe (7.1 MB)</div>
                                 </div>
                             </a>
 
@@ -94,7 +94,7 @@ export default function DownloadPage() {
                             </div>
 
                             <a
-                                href="https://www.virustotal.com/gui/file/453f3dbbea65e99930bd2df206ac2a3744908907a1f3a8d89bc8886ffbe79fe5"
+                                href="https://www.virustotal.com/gui/file/f5a34133f11263d2945fe18a051900f96e359224c8b55df2b567770169a69632?nocache=1"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-colors
@@ -117,19 +117,19 @@ export default function DownloadPage() {
                                     <div>
                                         <div className="text-[10px] font-mono uppercase opacity-40 mb-1">SHA-256</div>
                                         <code className={`block text-xs font-mono break-all p-3 rounded-lg ${cardBg} select-all cursor-text text-emerald-500/80`}>
-                                            453f3dbbea65e99930bd2df206ac2a3744908907a1f3a8d89bc8886ffbe79fe5
+                                            f5a34133f11263d2945fe18a051900f96e359224c8b55df2b567770169a69632
                                         </code>
                                     </div>
                                     <div>
                                         <div className="text-[10px] font-mono uppercase opacity-40 mb-1">MD5</div>
                                         <code className={`block text-xs font-mono break-all p-3 rounded-lg ${cardBg} select-all cursor-text`}>
-                                            a9de59aa38aa938a898a292e7efc3d4d
+                                            d61106812dd62b214e91d5a7cbfe7b22
                                         </code>
                                     </div>
                                     <div>
                                         <div className="text-[10px] font-mono uppercase opacity-40 mb-1">SHA-1</div>
                                         <code className={`block text-xs font-mono break-all p-3 rounded-lg ${cardBg} select-all cursor-text`}>
-                                            b2ff9d998e8b2abc1b7f450205c6ea7eea978cbe
+                                            68fa9752925ad5fb9829108d3789509e0e34bffc
                                         </code>
                                     </div>
                                 </div>
@@ -145,11 +145,11 @@ export default function DownloadPage() {
                                 <dl className="grid grid-cols-2 gap-4 text-sm">
                                     <div>
                                         <dt className={`text-xs ${mutedText}`}>File Name</dt>
-                                        <dd className="font-mono text-xs">ColorWall_3.5.7_x64-setup.exe</dd>
+                                        <dd className="font-mono text-xs">ColorWall_3.6.0_x64-setup.exe</dd>
                                     </div>
                                     <div>
                                         <dt className={`text-xs ${mutedText}`}>File Size</dt>
-                                        <dd className="font-mono text-xs">7.1 MB (7,127,504 bytes)</dd>
+                                        <dd className="font-mono text-xs">7.66 MB</dd>
                                     </div>
                                     <div>
                                         <dt className={`text-xs ${mutedText}`}>File Type</dt>
