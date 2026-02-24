@@ -47,8 +47,8 @@ export default function DownloadPage() {
                                 Download ColorWall
                             </h1>
                             <p className={`text-lg ${mutedText} max-w-xl mx-auto`}>
-                                An Lightweight Wallpaper Engine in Rust<br />
-                                <span className="text-xs font-mono opacity-70">v3.6.0 · 64-bit · Windows 10/11</span>
+                                A Lightweight Wallpaper Engine in Rust<br />
+                                <span className="text-xs font-mono opacity-70">v3.6.5 · 64-bit · Windows 10/11</span>
                             </p>
                         </div>
 
@@ -63,13 +63,13 @@ export default function DownloadPage() {
                                 <Download className="mt-1" size={24} />
                                 <div className="text-left">
                                     <div className="leading-none mb-1">Download Installer</div>
-                                    <div className="text-xs font-normal opacity-60">ColorWall_3.6.0_x64-setup.exe (7.1 MB)</div>
+                                    <div className="text-xs font-normal opacity-60">ColorWall_3.6.5_x64-setup.exe (7.69 MB)</div>
                                 </div>
                             </a>
 
                             <div className="flex items-center gap-2 text-xs font-mono opacity-50">
                                 <ShieldCheck size={14} className="text-emerald-500" />
-                                <span>VirusTotal Scanning Available Below</span>
+                                <span>✓ 0/72 security vendors flagged as malicious</span>
                             </div>
                         </div>
                     </motion.div>
@@ -89,12 +89,12 @@ export default function DownloadPage() {
                                 </div>
                                 <div>
                                     <h2 className="font-bold text-lg">Security Report</h2>
-                                    <p className={`text-xs ${mutedText}`}>Transparency is key. Verify our binary yourself.</p>
+                                    <p className={`text-xs ${mutedText}`}>Community Score: <span className="text-emerald-500 font-bold">1</span> · No vendors flagged this file</p>
                                 </div>
                             </div>
 
                             <a
-                                href="https://www.virustotal.com/gui/file/f5a34133f11263d2945fe18a051900f96e359224c8b55df2b567770169a69632?nocache=1"
+                                href="https://www.virustotal.com/gui/file/bcc95f7886dd86dc268d8022f366a7c55747fed5ce4aaf9ac2f50a6868e6ae5a/detection"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-colors
@@ -116,20 +116,26 @@ export default function DownloadPage() {
                                 <div className="space-y-4">
                                     <div>
                                         <div className="text-[10px] font-mono uppercase opacity-40 mb-1">SHA-256</div>
-                                        <code className={`block text-xs font-mono break-all p-3 rounded-lg ${cardBg} select-all cursor-text text-emerald-500/80`}>
-                                            f5a34133f11263d2945fe18a051900f96e359224c8b55df2b567770169a69632
+                                        <code className={`block text-xs font-mono break-all p-3 rounded-lg ${cardBg} select-all cursor-pointer text-emerald-500/80`}
+                                              onClick={() => navigator.clipboard?.writeText("bcc95f7886dd86dc268d8022f366a7c55747fed5ce4aaf9ac2f50a6868e6ae5a")}
+                                              title="Click to copy">
+                                            bcc95f7886dd86dc268d8022f366a7c55747fed5ce4aaf9ac2f50a6868e6ae5a
                                         </code>
                                     </div>
                                     <div>
                                         <div className="text-[10px] font-mono uppercase opacity-40 mb-1">MD5</div>
-                                        <code className={`block text-xs font-mono break-all p-3 rounded-lg ${cardBg} select-all cursor-text`}>
-                                            d61106812dd62b214e91d5a7cbfe7b22
+                                        <code className={`block text-xs font-mono break-all p-3 rounded-lg ${cardBg} select-all cursor-pointer`}
+                                              onClick={() => navigator.clipboard?.writeText("eff22f19ba81db83eb3032cb7b9f2ae7")}
+                                              title="Click to copy">
+                                            eff22f19ba81db83eb3032cb7b9f2ae7
                                         </code>
                                     </div>
                                     <div>
                                         <div className="text-[10px] font-mono uppercase opacity-40 mb-1">SHA-1</div>
-                                        <code className={`block text-xs font-mono break-all p-3 rounded-lg ${cardBg} select-all cursor-text`}>
-                                            68fa9752925ad5fb9829108d3789509e0e34bffc
+                                        <code className={`block text-xs font-mono break-all p-3 rounded-lg ${cardBg} select-all cursor-pointer`}
+                                              onClick={() => navigator.clipboard?.writeText("bc93d9401a7d165a27ab21ae8d531af6a24025ee")}
+                                              title="Click to copy">
+                                            bc93d9401a7d165a27ab21ae8d531af6a24025ee
                                         </code>
                                     </div>
                                 </div>
@@ -145,33 +151,37 @@ export default function DownloadPage() {
                                 <dl className="grid grid-cols-2 gap-4 text-sm">
                                     <div>
                                         <dt className={`text-xs ${mutedText}`}>File Name</dt>
-                                        <dd className="font-mono text-xs">ColorWall_3.6.0_x64-setup.exe</dd>
+                                        <dd className="font-mono text-xs">ColorWall_3.6.5_x64-setup.exe</dd>
                                     </div>
                                     <div>
                                         <dt className={`text-xs ${mutedText}`}>File Size</dt>
-                                        <dd className="font-mono text-xs">7.66 MB</dd>
+                                        <dd className="font-mono text-xs">7.69 MB (8,062,552 bytes)</dd>
                                     </div>
                                     <div>
                                         <dt className={`text-xs ${mutedText}`}>File Type</dt>
-                                        <dd className="font-mono text-xs">Win32 EXE (GUI) Intel 80386</dd>
+                                        <dd className="font-mono text-xs">Win32 EXE · Nullsoft Installer</dd>
                                     </div>
                                     <div>
-                                        <dt className={`text-xs ${mutedText}`}>Installer</dt>
-                                        <dd className="font-mono text-xs">Nullsoft Scriptable Install System</dd>
+                                        <dt className={`text-xs ${mutedText}`}>Created</dt>
+                                        <dd className="font-mono text-xs">2021-09-25</dd>
+                                    </div>
+                                    <div className="col-span-2">
+                                        <dt className={`text-xs ${mutedText}`}>Compiler</dt>
+                                        <dd className="font-mono text-xs">Microsoft Visual C/C++ · Linker 6.0</dd>
                                     </div>
                                     <div className="col-span-2">
                                         <dt className={`text-xs ${mutedText}`}>Signature</dt>
-                                        <dd className="font-mono text-xs flex items-center gap-2 text-amber-500">
-                                            {/* <AlertTriangle size={12} /> */}
-                                            Unsigned (for now, in dev phase)
+                                        <dd className="font-mono text-xs flex items-center gap-2">
+                                            <span className="text-amber-500">●</span>
+                                            Not signed (development phase)
                                         </dd>
                                     </div>
                                 </dl>
 
                                 <div className={`p-4 rounded-xl border border-dashed ${borderColor} bg-transparent`}>
                                     <p className={`text-xs ${mutedText} leading-relaxed`}>
-                                        <strong className="block mb-1 text-current">Why is it shown as "Unsigned"?</strong>
-                                        Code signing certificates cost hundreds of dollars a year. As a currently free & soon to be open-source software we don't have the resources to get a code signing certificate YET (but we will). You may need to click "Run Anyway" on Windows SmartScreen.
+                                        <strong className="block mb-1 text-current">Why is it unsigned?</strong>
+                                        Code signing certificates are costly. As free & soon-to-be open-source software, we're transparent by providing direct VirusTotal verification. You may need to click "Run Anyway" on SmartScreen.
                                     </p>
                                 </div>
                             </div>
